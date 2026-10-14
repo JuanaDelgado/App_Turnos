@@ -1,29 +1,10 @@
-public class Profesional {
+public class Profesional extends Persona {
 
-    private Long id;
-    private String nombre;
     private String especialidad;
 
     public Profesional(Long id, String nombre, String especialidad) {
-        setId(id);
-        setNombre(nombre);
+        super(id, nombre);
         setEspecialidad(especialidad);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getEspecialidad() {
@@ -35,7 +16,7 @@ public class Profesional {
     }
 
     public String toString() {
-        return "Profesional: id= " + id + ", nombre= " + nombre + ", especialidad= " +especialidad;
+        return "Profesional: " + super.toString() + ", especialidad= " +especialidad;
     }
 
 }

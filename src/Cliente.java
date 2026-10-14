@@ -1,31 +1,12 @@
-public class Cliente {
+public class Cliente extends Persona implements Notificable {
 
-    private Long id;
-    private String nombre;
     private String email;
     private String telefono;
 
     public Cliente(Long id, String nombre, String email, String telefono) {
-        setId(id);
-        setNombre(nombre);
+        super(id, nombre);
         setEmail(email);
         setTelefono(telefono);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getEmail() {
@@ -45,7 +26,12 @@ public class Cliente {
     }
 
     public String toString() {
-        return "CLiente: id= " + id + ", nombre= " + nombre + ", email= " + email + ", telefono= " + telefono;
+        return "Cliente: " + super.toString() + ", email= " + email + ", telefono= " + telefono;
+    }
+
+    @Override
+    public void notificar(String mensaje) {
+        System.out.println("Enviando email a " + email + ": " + mensaje );
     }
 
 }
