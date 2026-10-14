@@ -31,5 +31,35 @@ public class Main {
         + "ahora será con " + t2.getProfesional().getNombre()
         + ". Su estado actual es " + t2.getEstado() + ". Te esperamos");
 
+        AgendaService agenda = new AgendaService();
+        agenda.agregarCliente(c1);
+        agenda.agregarCliente(c2);
+
+        agenda.agregarProfesional(p1);
+        agenda.agregarProfesional(p2);
+
+        agenda.agregarTurno(t1);
+        agenda.agregarTurno(t2);
+
+        System.out.println("--- Todos los turnos ---");
+        for (Turno t : agenda.listarTurnos()) {
+            System.out.println(t);
+        }
+
+        System.out.println("\n --- Búsqueda de turnos ---");
+        System.out.println("Turno 2: " + agenda.buscarTurnoXId(6L));
+        System.out.println("Turno 99: " +agenda.buscarTurnoXId(99L));
+
+        System.out.println("\n --- Cancelación ---");
+        agenda.cancelarTurno(5L);
+        System.out.println("Estado del turno 1: " + agenda.buscarTurnoXId(5L).getEstado());
+
+        System.out.println("\n --- Búsqueda de clientes ---");
+        System.out.println("Cliente 2: " + agenda.buscarClienteXId(2L));
+        System.out.println("Cliente 10: " + agenda.buscarClienteXId(10L));
+
+        System.out.println("\n --- Especialidades ---");
+        System.out.println(agenda.obtenerEspecialidades());
+
     }
 }
