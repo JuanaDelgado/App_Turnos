@@ -20,14 +20,14 @@ public class Main {
             System.out.println(p);
         }
 
-        Turno t1 = new Turno(5L, c1, p1, LocalDateTime.of(2026, 10, 15, 10, 30), EstadoTurno.PENDIENTE);
+        Turno t1 = new Turno(5L, c1, p1, LocalDateTime.of(2026, 11, 10, 10, 30), EstadoTurno.PENDIENTE);
         System.out.println(t1);
 
-        Turno t2 = new Turno(6L, c1, p1, LocalDateTime.of(2026, 10, 20, 11, 30), EstadoTurno.CANCELADO);
+        Turno t2 = new Turno(6L, c1, p1, LocalDateTime.of(2026, 11, 12, 11, 30), EstadoTurno.CANCELADO);
         t2.setProfesional(p2);
         t2.setEstado(EstadoTurno.PENDIENTE);
         System.out.println(t2);
-        c1.notificar("Hola " + c1.getNombre() + " Te avisamos que tu turno del 20/10 a las 11:30 "
+        c1.notificar("Hola " + c1.getNombre() + " Te avisamos que tu turno del 12/11 a las 11:30 "
         + "ahora será con " + t2.getProfesional().getNombre()
         + ". Su estado actual es " + t2.getEstado() + ". Te esperamos");
 
@@ -48,7 +48,6 @@ public class Main {
 
         System.out.println("\n --- Búsqueda de turnos ---");
         System.out.println("Turno 2: " + agenda.buscarTurnoXId(6L));
-        System.out.println("Turno 99: " +agenda.buscarTurnoXId(99L));
 
         System.out.println("\n --- Cancelación ---");
         agenda.cancelarTurno(5L);
@@ -60,6 +59,28 @@ public class Main {
 
         System.out.println("\n --- Especialidades ---");
         System.out.println(agenda.obtenerEspecialidades());
+
+        // Horario ocupado: Usá un profesuonal y una fecha que ya tengan turno
+        try {
+            agenda.agregarTurno(new Turno(7L, c2, p1, LocalDateTime.of(2026, 11, 12, 11, 0), EstadoTurno.PENDIENTE));
+            System.out.println("Turno agregado");
+        } catch (HorarioOcupadoException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        //Turno que no existe
+        try {
+            agenda.cancelarTurno(99L);
+        } catch (TurnoNoEncontradoException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        try {
+            agenda.agregarTurno(new Turno(8L, c1, p2, LocalDateTime.of(2025, 1, 10, 9, 0), EstadoTurno.PENDIENTE));
+            System.out.println("Turno agregado");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
     }
 }

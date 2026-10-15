@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class AgendaService {
@@ -7,6 +8,19 @@ public class AgendaService {
     private final List<Profesional> profesionales = new ArrayList<>();
 
     public void agregarTurno(Turno turno) {
+        if (turno.getHora().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("No se puede reservar un turno en el pasado: " + turno.getHora());
+        }
+
+        for (Turno existente : turnos) {
+            boolean mismoProfesional = existente.getProfesional().getId().equals(turno.getProfesional().getId());
+            boolean mismaHora = existente.getHora().equals(turno.getHora());
+            boolean noCancelado = existente.getEstado() != EstadoTurno.CANCELADO;
+
+            if (mismoProfesional && mismaHora && noCancelado) {
+                throw new HorarioOcupadoException(turno.getProfesional().getNombre(), turno.getHora());
+            }
+        }
         turnos.add(turno);
     }
 
@@ -28,7 +42,7 @@ public class AgendaService {
                 return turno;
             }
         }
-        return null;
+        throw new TurnoNoEncontradoException(id);
     }
 
     public Cliente buscarClienteXId(Long id) {
@@ -37,9 +51,7 @@ public class AgendaService {
 
     public void cancelarTurno(Long id) {
         Turno turno = buscarTurnoXId(id);
-        if(turno != null){
-            turno.setEstado(EstadoTurno.CANCELADO);
-        }
+        turno.setEstado(EstadoTurno.CANCELADO);
     }
 
     public Set<String> obtenerEspecialidades() {
