@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Turno {
 
@@ -59,4 +60,5 @@ public class Turno {
     public String toString() {
         return "Turno: id= " + id + ", cliente= " + cliente + ", profesional= " + profesional + ", hora= " + hora + ", estado= " + estado;
     }
+
 }

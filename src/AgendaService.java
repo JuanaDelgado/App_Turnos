@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AgendaService {
 
@@ -37,12 +38,10 @@ public class AgendaService {
     }
 
     public Turno buscarTurnoXId(Long id) {
-        for (Turno turno : turnos) {
-            if(turno.getId().equals(id)){
-                return turno;
-            }
-        }
-        throw new TurnoNoEncontradoException(id);
+        return turnos.stream()
+                .filter(t -> t.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new TurnoNoEncontradoException(id));
     }
 
     public Cliente buscarClienteXId(Long id) {
@@ -62,4 +61,26 @@ public class AgendaService {
         return especialidades;
     }
 
+    public List<Turno> turnoDeProfesional(Long profesionalId) {
+        return turnos.stream()
+                .filter(t -> t.getProfesional().getId().equals(profesionalId))
+                .toList();
+    }
+
+    public List<Turno> turnosPorEstado(EstadoTurno estado) {
+        return turnos.stream()
+                .filter(t -> t.getEstado() == estado)
+                .toList();
+    }
+
+    public List<Turno> turnosOrdenadosPorFecha() {
+        return turnos.stream()
+                .sorted(Comparator.comparing(Turno::getHora))
+                .toList();
+    }
+
+    public Map<EstadoTurno, Long> contarTunrosPorEstado () {
+        return turnos.stream()
+                .collect(Collectors.groupingBy(Turno::getEstado, Collectors.counting()));
+    }
 }

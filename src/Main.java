@@ -60,7 +60,6 @@ public class Main {
         System.out.println("\n --- Especialidades ---");
         System.out.println(agenda.obtenerEspecialidades());
 
-        // Horario ocupado: Usá un profesuonal y una fecha que ya tengan turno
         try {
             agenda.agregarTurno(new Turno(7L, c2, p1, LocalDateTime.of(2026, 11, 12, 11, 0), EstadoTurno.PENDIENTE));
             System.out.println("Turno agregado");
@@ -68,7 +67,6 @@ public class Main {
             System.out.println("Error: " + e.getMessage());
         }
 
-        //Turno que no existe
         try {
             agenda.cancelarTurno(99L);
         } catch (TurnoNoEncontradoException e) {
@@ -81,6 +79,25 @@ public class Main {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         }
+
+        System.out.println("\n--- Turnos de Mario ---");
+        for (Turno t : agenda.turnoDeProfesional(4L)) {
+            System.out.println(t);
+        }
+
+        System.out.println("\n--- Turnos pendientes ---");
+        for (Turno t : agenda.turnosPorEstado(EstadoTurno.PENDIENTE)) {
+            System.out.println(t);
+        }
+
+        System.out.println("\n--- Turnos ordenados por fecha ---");
+        for (Turno t : agenda.turnosOrdenadosPorFecha()) {
+            System.out.println(t);
+        }
+
+        System.out.println("\n--- Cantidad de turnos por estado ---");
+        System.out.println(agenda.contarTunrosPorEstado());
+
 
     }
 }
