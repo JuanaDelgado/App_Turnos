@@ -44,3 +44,31 @@ select  * from turnos where id = 3;
 select * from turnos where id = 2;
 delete from turnos where id = 2;
 select * from turnos;
+
+-- Listado de turnos con el nombre del cliente y del profesional
+select t.id, c.nombre as cliente, p.nombre as profesional, t.fecha_hora, t.estado
+from turnos t
+inner join clientes c on t.cliente_id  = c.id
+inner join profesionales p on t.profesional_id = p.id
+order by t.fecha_hora;
+
+-- Listado de profesionales, tengan o no turnos
+select p.nombre as profesional, t.id as turno, t.fecha_hora
+from profesionales p
+left join turnos t on t.profesional_id = p.id
+order by p.nombre ;
+
+-- Contar turnos por profesional
+select p.nombre as profesional, count(t.id) as cantidad_turnos
+from profesionales p
+left join turnos t on t.profesional_id = p.id
+group by  p.nombre
+order by cantidad_turnos desc;
+
+-- Mostrar solo profesionales con más de 2 turnos
+select p.nombre as profesional, COUNT(t.id) as cantidad_turnos
+from profesionales p
+left join turnos t on t.profesional_id = p.id
+group by p.nombre
+having COUNT(t.id) > 2
+order by cantidad_turnos desc;

@@ -10,7 +10,8 @@ insert into profesionales (nombre, especialidad)
 values
     ('Sebastian Brey', 'cirujano'),
     ('Antonia Blanco', 'dermatologa'),
-    ('Veronica Marínez', 'traumatologa');
+    ('Veronica Marínez', 'traumatologa'),
+    ('Pablo Ruiz', 'pediatra');
 
 insert into turnos (cliente_id, profesional_id, fecha_hora, estado)
 values
