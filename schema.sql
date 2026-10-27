@@ -18,3 +18,8 @@ create table turnos (
     fecha_hora TIMESTAMP not null,
     estado VARCHAR(20) not null
 );
+
+alter table turnos
+add constraint uq_turnos_profesional_fecha unique (profesional_id, fecha_hora);
+
+create index idx_turnos_fecha_hora on turnos (fecha_hora);

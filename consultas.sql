@@ -72,3 +72,25 @@ left join turnos t on t.profesional_id = p.id
 group by p.nombre
 having COUNT(t.id) > 2
 order by cantidad_turnos desc;
+
+-- Prueba: Debe fallar porque Sebastian (1) ya tiene turno el 20/11 a las 10:00
+insert into turnos (cliente_id, profesional_id, fecha_hora, estado)
+values (2, 1, '2026-11-02 10:00:00', 'PENDIENTE');
+
+explain select * from turnos where fecha_hora >= '2026-11-04';
+
+-- Transacción que falla: el turno choca, asi que Carlos tampoco se registra
+begin;
+insert into clientes (nombre, email, telefono)
+values ('Carlos Díaz', 'carlos@gmail.com', '1133334444');
+insert into turnos (cliente_id, profesional_id, fecha_hora, estado)
+values ((select id from clientes where email = 'carlos@gmail.com'), 1, '2026-11-02 10:00:00', 'PENDIENTE');
+rollback;
+
+-- Trasacción exitosa: horario libre, se guardan los dos
+begin;
+insert into clientes (nombre, email, telefono)
+values ('Carlos Díaz', 'carlos@gmail.com', '1133334444');
+insert into turnos (cliente_id, profesional_id, fecha_hora, estado)
+values ((select id from clientes where email = 'carlos@gmail.com'), 1, '2026-11-10 11:00:00', 'PENDIENTE');
+commit;
