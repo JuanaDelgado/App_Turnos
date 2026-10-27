@@ -50,3 +50,19 @@ Permite registrar clientes y profesionales, reservar turnos, cancelarlos y consu
 ```
 2. Abrir el proyecto en IntelliJ IDEA (requiere JDK 21).
 3. Ejecutar la clase `Main`, que crea datos de prueba y muestra todas las funcionalidades por consola.
+
+## Base de datos
+
+El proyecto incluye scripts SQL para PostgreSQL:
+
+- `schema.sql`: crea las tablas `clientes`, `profesionales` y `turnos`, con sus claves, restricciones e índices.
+- `data.sql`: carga datos de prueba.
+- `consultas.sql`: consultas de práctica (filtros, JOINs, agregaciones y transacciones).
+
+Para levantar PostgreSQL con Docker:
+
+```
+docker run --name turnos-postgres -e POSTGRES_USER=turnos -e POSTGRES_PASSWORD=turnos123 -e POSTGRES_DB=turnos_db -p 5433:5432 -d postgres:16
+```
+
+Después, ejecutar `schema.sql` y luego `data.sql`.
